@@ -7,6 +7,17 @@ layout: default
 
 [← Back to index](index.md)
 
+## v1.4.0
+
+- Added structured QR payload support: WiFi, Contact (vCard), Phone, SMS, Email, Geo location, Calendar event, URL
+- New `Payloads\*` classes implementing `PayloadInterface`, each with `toPayloadString()` (and `fromPayloadString()` where applicable)
+- New facade methods: `generateWifi()`, `generateContact()`, `generatePhone()`, `generateSms()`, `generateEmail()`, `generateGeo()`, `generateEvent()`, `generateUrl()`, `generateFromPayload()`, `generatePayloadToFile()`, `generatePayloadDataUri()`
+- `DecodedResult` now exposes `type` (`PayloadType` enum) and `parsed` (structured array) for automatic payload detection when reading
+- New `Support\PayloadParser` for detecting and parsing structured payload types from decoded text
+- Added `Enums\PayloadType` and `Enums\WifiEncryption`
+- Verified and tested colored QR code generation and reading (foreground/background customization works reliably end-to-end)
+- New docs pages: Structured Payloads, Colors & Styling
+
 ## v1.3.0
 
 - Fixed: `Call to undefined method Zxing\QrReader::getResultPoints()` on some versions of the decoder library

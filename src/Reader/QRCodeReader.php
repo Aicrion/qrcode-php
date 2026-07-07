@@ -7,6 +7,7 @@ namespace Aicrion\QRCode\Reader;
 use Aicrion\QRCode\Contracts\ReaderInterface;
 use Aicrion\QRCode\Contracts\SourceResolverInterface;
 use Aicrion\QRCode\Exceptions\DecodingException;
+use Aicrion\QRCode\Support\PayloadParser;
 use Aicrion\QRCode\Support\SourceResolver;
 use Aicrion\QRCode\ValueObjects\DecodedResult;
 use Zxing\QrReader;
@@ -18,7 +19,8 @@ use Zxing\QrReader;
 final class QRCodeReader implements ReaderInterface
 {
     public function __construct(
-        private readonly SourceResolverInterface $sourceResolver = new SourceResolver()
+        private readonly SourceResolverInterface $sourceResolver = new SourceResolver(),
+        private readonly PayloadParser $payloadParser = new PayloadParser()
     ) {
     }
 
@@ -71,8 +73,15 @@ final class QRCodeReader implements ReaderInterface
             }
 
             $points = $this->extractResultPoints($reader);
+            $type = $this->payloadParser->detectType((string) $text);
+            $parsed = $this->payloadParser->parse((string) $text);
 
-            return new DecodedResult(content: (string) $text, points: $points);
+            return new DecodedResult(
+                content: (string) $text,
+                points: $points,
+                type: $type,
+                parsed: $parsed,
+            );
         } finally {
             @unlink($tmpFile);
         }

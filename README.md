@@ -23,6 +23,8 @@
 - 🖼️ **Multiple output formats** — PNG, SVG, EPS, WEBP
 - 📥 **Multiple input sources for reading** — file path, binary string, Base64, URL, GD image, stream resource
 - 🎨 **Full customization** — size, margin, colors, error correction level, embedded logo, caption label
+- 📇 **Structured payloads** — WiFi, Contact (vCard), Phone, SMS, Email, Geo location, Calendar events, URLs, with automatic type detection when reading
+- 🌈 **Colored QR codes** — generate and reliably read back QR codes with fully custom foreground/background colors
 - 🧪 **Fully tested** — unit and feature tests with PHPUnit
 - 📦 **Zero-config Composer install** — sane, production-ready defaults out of the box
 - 🧯 **Rich exception hierarchy** — precise, catchable error types for every failure mode
@@ -110,6 +112,45 @@ $result = $qr->readFromPath(__DIR__ . '/farsi-qr.png');
 echo $result->content; // سلام دنیا! این یک کد کیوآر فارسی است.
 ```
 
+## 📇 Structured QR Codes (WiFi, Contact, Phone, etc.)
+
+```php
+use Aicrion\QRCode\Enums\WifiEncryption;
+
+$qr->generateWifi(ssid: 'MyNetwork', password: 'secret123', encryption: WifiEncryption::WPA);
+$qr->generateContact(firstName: 'Hadi', lastName: 'Akbarzadeh', phone: '+989120000000', email: 'hadi@elatel.ir');
+$qr->generatePhone('+989120000000');
+$qr->generateSms('+989120000000', 'Hello!');
+$qr->generateEmail('hello@aicrion.dev', 'Subject', 'Body');
+$qr->generateGeo(35.6892, 51.3890);
+$qr->generateUrl('https://github.com/aicrion/qrcode-php');
+```
+
+Reading automatically detects and parses the payload type:
+
+```php
+$result = $qr->readFromPath(__DIR__ . '/wifi.png');
+
+echo $result->type->value; // "wifi"
+print_r($result->parsed);  // ['ssid' => 'MyNetwork', 'password' => 'secret123', ...]
+```
+
+See the [Structured Payloads documentation](https://aicrion.github.io/qrcode-php/payloads.html) for the full list of supported types.
+
+## 🌈 Colored QR Codes
+
+```php
+use Aicrion\QRCode\ValueObjects\{QRCodeOptions, Color};
+
+$options = (new QRCodeOptions())->withColors(Color::fromHex('#0f172a'), Color::fromHex('#f8fafc'));
+
+$qr->generateToFile('https://aicrion.dev', __DIR__ . '/branded-qr.png', $options);
+
+// Reading colored QR codes works exactly like black & white ones
+$result = $qr->readFromPath(__DIR__ . '/branded-qr.png');
+echo $result->content;
+```
+
 ## 🧯 Exception Handling
 
 All exceptions extend `Aicrion\QRCode\Exceptions\QRCodeException`:
@@ -138,7 +179,7 @@ Full documentation, including the complete API reference, is available at:
 
 **[https://aicrion.github.io/qrcode-php/](https://aicrion.github.io/qrcode-php/)**
 
-Table of contents: Installation · Quick Start · Generating QR Codes · Reading QR Codes · Configuration Options · Exception Handling · Examples · API Reference · Contributing · Changelog
+Table of contents: Installation · Quick Start · Generating QR Codes · Reading QR Codes · Structured Payloads · Colors & Styling · Configuration Options · Exception Handling · Examples · API Reference · Contributing · Changelog
 
 ## 🤝 Contributing
 
