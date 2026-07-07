@@ -1,0 +1,61 @@
+{
+    "name": "aicrion/qrcode",
+    "description": "A modern, professional PHP 8.2+ library to generate and read QR codes in multiple formats and from multiple sources.",
+    "keywords": [
+        "qrcode",
+        "qr-code",
+        "qr",
+        "barcode",
+        "generator",
+        "reader",
+        "decoder",
+        "php8",
+        "aicrion"
+    ],
+    "type": "library",
+    "homepage": "https://github.com/aicrion/qrcode-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hadi Akbarzadeh",
+            "email": "elsiomcoder@gmail.com",
+            "homepage": "https://elatel.ir",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/aicrion/qrcode-php/issues",
+        "source": "https://github.com/aicrion/qrcode-php"
+    },
+    "require": {
+        "php": ">=8.2",
+        "ext-gd": "*",
+        "bacon/bacon-qr-code": "^3.0",
+        "khanamiryan/qrcode-detector-decoder": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^1.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aicrion\\QRCode\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aicrion\\QRCode\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs-fix": "php-cs-fixer fix",
+        "stan": "phpstan analyse src"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
