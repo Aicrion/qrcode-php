@@ -29,4 +29,25 @@ final class EmailPayload implements PayloadInterface
             ? 'mailto:' . $this->to
             : sprintf('mailto:%s?%s', $this->to, $queryString);
     }
+
+    public static function fromPayloadString(string $payload): self
+    {
+        $payload = trim($payload);
+
+        if (str_starts_with($payload, 'mailto:')) {
+            $payload = substr($payload, 7);
+        }
+
+        [$to, $query] = array_pad(explode('?', $payload, 2), 2, '');
+
+        $subject = '';
+        $body = '';
+        if ($query !== '') {
+            parse_str($query, $parsed);
+            $subject = (string) ($parsed['subject'] ?? '');
+            $body = (string) ($parsed['body'] ?? '');
+        }
+
+        return new self(to: $to, subject: $subject, body: $body);
+    }
 }

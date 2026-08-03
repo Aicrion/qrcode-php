@@ -18,4 +18,15 @@ final class PhonePayload implements PayloadInterface
     {
         return 'tel:' . $this->phoneNumber;
     }
+
+    public static function fromPayloadString(string $payload): self
+    {
+        $payload = trim($payload);
+
+        if (str_starts_with($payload, 'tel:')) {
+            $payload = substr($payload, 4);
+        }
+
+        return new self($payload);
+    }
 }

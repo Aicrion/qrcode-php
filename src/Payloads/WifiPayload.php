@@ -34,7 +34,7 @@ final class WifiPayload implements PayloadInterface
 
     private function escape(string $value): string
     {
-        return preg_replace('/([\\;,":])/', '\\$1', $value) ?? $value;
+        return preg_replace('/([\\;,":])/', '\\\\$1', $value) ?? $value;
     }
 
     public static function fromPayloadString(string $payload): self

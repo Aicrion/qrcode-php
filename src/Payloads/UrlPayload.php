@@ -18,4 +18,9 @@ final class UrlPayload implements PayloadInterface
     {
         return $this->url;
     }
+
+    public static function fromPayloadString(string $payload): self
+    {
+        return new self(trim($payload));
+    }
 }
